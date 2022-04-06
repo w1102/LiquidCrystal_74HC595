@@ -1,12 +1,18 @@
 #include <LiquidCrystal_74HC595.h>
 
-LiquidCrystal_74HC595::LiquidCrystal_74HC595(uint8_t ds, uint8_t shcp, uint8_t stcp,
-        uint8_t rs, uint8_t e, uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3) {
+LiquidCrystal_74HC595::LiquidCrystal_74HC595(
+    uint8_t ds /* data */, uint8_t shcp /* clock */, uint8_t stcp /* latch */,
+    uint8_t rs, 
+    uint8_t e, 
+    uint8_t backlight, 
+    uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3) {
+
     _ds = ds;
     _shcp = shcp;
     _stcp = stcp;
     _rs = rs;
     _e = e;
+    _backlight = backlight;
     _d0 = d0;
     _d1 = d1;
     _d2 = d2;
@@ -43,6 +49,14 @@ void LiquidCrystal_74HC595::begin(uint8_t cols, uint8_t rows, uint8_t charsize) 
     command(LCD_DISPLAYCONTROL | _displayControl);
     clear();
     command(LCD_ENTRYMODESET | _displayMode);
+}
+
+void LiquidCrystal_74HC595::backlight() {
+    _isBackLight = true;
+}
+
+void LiquidCrystal_74HC595::noBacklight() {
+    _isBackLight = false;
 }
 
 void LiquidCrystal_74HC595::clear() {
@@ -167,6 +181,9 @@ void LiquidCrystal_74HC595::write4bits(uint8_t value) {
 }
 
 void LiquidCrystal_74HC595::transfer() {
+
+    bitWrite(_register, _blacklight, _isBlacklight)
+    
     digitalWrite(_stcp, LOW);
     shiftOut(_ds, _shcp, MSBFIRST, _register);
     digitalWrite(_stcp, HIGH);

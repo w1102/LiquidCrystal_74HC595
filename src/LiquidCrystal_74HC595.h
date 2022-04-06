@@ -34,9 +34,15 @@
 
 class LiquidCrystal_74HC595 : public Print {
     public:
-        LiquidCrystal_74HC595(uint8_t ds, uint8_t shcp, uint8_t stcp,
-                uint8_t rs, uint8_t e, uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3);
+        LiquidCrystal_74HC595::LiquidCrystal_74HC595(
+            uint8_t ds /* data */, uint8_t shcp /* clock */, uint8_t stcp /* latch */,
+            uint8_t rs, 
+            uint8_t e, 
+            uint8_t backlight, 
+            uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3);
         void begin(uint8_t cols, uint8_t rows, uint8_t charsize = LCD_5x8DOTS);
+        void backlight();
+        void noBacklight();
         void clear();
         void home();
         void noDisplay();
@@ -66,6 +72,8 @@ class LiquidCrystal_74HC595 : public Print {
         uint8_t _stcp;
         uint8_t _rs;
         uint8_t _e;
+        uint8_t _backlight;
+        uint8_t _isBackLight = false;
         uint8_t _d0;
         uint8_t _d1;
         uint8_t _d2;
